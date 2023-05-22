@@ -1,6 +1,10 @@
 # Required
 vc_password=''
 vc_hostname='vc01.h2o-2-10553.h2o.vmware.com'
+
+content_library_name='avi'
+jumpbox_ova_name='focal-server-cloudimg-amd64'
+
 jumpbox_ip='10.220.55.66'
 jumpbox_gateway='10.220.55.126'
 

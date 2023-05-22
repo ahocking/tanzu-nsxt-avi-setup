@@ -48,15 +48,6 @@ function addSSHKeyToJumphost {
   chmod 400 ~/.ssh/id_rsa
 }
 
-function installOm {
-  echo "Installing om"
-  if [ ! -f  /usr/local/bin/om ]; then
-    wget -q https://github.com/pivotal-cf/om/releases/download/7.8.2/om-linux-amd64-7.8.2
-    sudo install om-linux-amd64-7.8.2 /usr/local/bin/om
-    rm -f om-linux-amd64-7.8.2
-  fi
-}
-
 function installJq {
   echo "Installing jq"
   if [ ! -f  /usr/local/bin/jq ]; then
@@ -114,8 +105,9 @@ function installYtt {
 function installDocker {
   echo "Installing docker"
   curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-  sudo apt-get -qq update
-  sudo apt-get -qq install -y ca-certificates curl gnupg lsb-release jq docker-ce docker-ce-cli containerd.io docker-compose-plugin
+  sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+  sudo apt-get -qq update -y
+  sudo apt-get -qq install -y ca-certificates curl gnupg lsb-release jq docker-ce docker-ce-cli containerd.io docker-compose-plugin unzip
   sudo usermod -aG docker ubuntu
 }
 
@@ -132,6 +124,7 @@ function installTKGmTools {
   installVcc
   installGovc
   installYtt
+  installJq
   installDocker
   installKind
 }
