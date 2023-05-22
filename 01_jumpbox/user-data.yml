@@ -1,0 +1,79 @@
+#@ load("@ytt:data", "data")
+
+#@ DVs = data.values
+---
+password: #@ DVs.vc_password
+ssh_pwauth: true
+chpasswd:
+  expire: false
+groups:
+- docker
+users:
+- default
+- name: ubuntu
+  ssh-authorized-keys:
+  - #@ DVs.public_ssh_key
+  sudo: ALL=(ALL) NOPASSWD:ALL
+  groups: sudo, docker
+  shell: /bin/bash
+growpart:
+  mode: auto
+  devices: ["/"]
+resize_rootfs: noblock
+ntp:
+  enabled: false
+  servers:
+  - time1.oc.vmware.com
+  - time2.oc.vmware.com
+  - time3.oc.vmware.com
+  - time4.oc.vmware.com
+write_files:
+  #fix syslog sda/sdb errors
+- path: /etc/multipath.conf
+  append: true
+  content: |
+    blacklist {
+      device {
+        vendor "VMware"
+        product "Virtual disk"
+      }
+    }
+#@ if DVs.wcp != "":
+- path: /etc/environment
+  append: true
+  #@yaml/text-templated-strings
+  content: |
+    KUBECTL_VSPHERE_PASSWORD=(@= DVs.vc_password @)
+#@ end
+- path: /etc/cloud/cloud.cfg.d/99-disable-network-config.cfg
+  permissions: '0644'
+  content: |
+    network: {config: disabled}
+runcmd:
+- echo -n > /etc/machine-id
+- systemctl restart multipathd
+#! remove floppy
+- rmmod floppy
+- echo "blacklist floppy" | sudo tee /etc/modprobe.d/blacklist-floppy.conf
+- dpkg-reconfigure initramfs-tools
+- curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
+- add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+- apt-get update -y
+- apt-get install -y docker-ce docker-ce-cli containerd.io unzip
+- systemctl start docker
+- systemctl enable docker
+#@ if DVs.wcp != "":
+#! download 0.11.4 tanzu cli
+- curl -LO https://github.com/vmware-tanzu/tanzu-framework/releases/download/v0.11.4/tanzu-cli-linux-amd64.tar.gz
+- mkdir tanzu && tar -zxvf tanzu-cli-linux-amd64.tar.gz -C tanzu
+- install tanzu/v0.11.4/tanzu-core-linux_amd64 /usr/local/bin/tanzu
+- runuser ubuntu -c 'tanzu init'
+- runuser ubuntu -c "echo 'source <(kubectl completion bash)' >>~/.bashrc"
+- runuser ubuntu -c "echo 'alias k=kubectl' >>~/.bashrc"
+- runuser ubuntu -c "echo 'complete -F __start_kubectl k' >>~/.bashrc"
+#@yaml/text-templated-strings
+- curl -LOk https://(@= DVs.wcp @)/wcp/plugin/linux-amd64/vsphere-plugin.zip
+- unzip -o vsphere-plugin.zip -d "/usr/local/"
+#@yaml/text-templated-strings
+- [su, ubuntu, -c, "kubectl vsphere login --server=(@= DVs.wcp @) --vsphere-username administrator@vsphere.local -v10 --insecure-skip-tls-verify"]
+#@ end
