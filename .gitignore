@@ -1,6 +1,8 @@
 # Local .terraform directories
 **/.terraform/*
 
+artifact-downloads
+
 # .tfstate files
 *.tfstate
 *.tfstate.*
