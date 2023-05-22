@@ -1,0 +1,15 @@
+# Required
+vc_password=''
+vc_hostname='vc01.h2o-2-10553.h2o.vmware.com'
+jumpbox_ip='10.220.55.66'
+jumpbox_gateway='10.220.55.126'
+
+# Optional - overrides defaults
+jumpbox_netmask='255.255.255.192'
+jumpbox_dns='10.220.136.2'
+wcp='vc01cl01-wcp.h2o-2-10553.h2o.vmware.com'
+vm_name='jumpbox3'
+vm_network='user-workload'
+root_disk_size='50G'
+datastore='vsanDatastore'
+ram='2048'

@@ -1,0 +1,11 @@
+vcc_user='administrator@vsphere.local' 
+vcc_pass='' 
+vsphere_control_plane_endpoint='10.220.2.162'
+tkgm_version='2.1.0'
+# inherited from jumpbox config
+slot_password='supersecret'
+h2o_domain='h2o-11-255.h2o.vmware.com'
+jumpbox_ip=''
+os_name='photon | ubuntu'
+cluster_plan='dev | prod'
+base64_cacert=<base64 encoded pem file contents of cacert>

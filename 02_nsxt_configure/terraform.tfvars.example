@@ -1,0 +1,35 @@
+nsxt_host = "nsxt01.h2o-2-972.h2o.vmware.com"
+nsxt_username = "admin"
+nsxt_password = "[redacted]"
+allow_unverified_ssl = true
+
+vsphere_user = "administrator@vsphere.local"
+vsphere_password = "[redacted]"
+vsphere_server = "vc01.h2o-2-972.h2o.vmware.com"
+vsphere_datacenter_name = "vc01"
+vsphere_datastore_name = "vsanDatastore"
+
+avi_controller_content_item_name = "controller-22.1.3-9096"
+avi_controller_ip = "10.184.142.201"
+avi_controller_external_ip = 10.220.38.48
+
+nsxt_edge_cluster_name = "nsxt01cl01"
+east_west_transport_zone_name = "nsxt01-overlay"
+nsxt_active_t0_gateway_name = "nsxt01-t0-tr"
+
+dns_servers = ["10.79.2.5", "10.79.2.6"]
+
+# h2o egress gateway
+tkg_vip_segment_cidr = "10.184.144.1/24"
+tkg_vip_segment_subnet = "10.184.144.0/24"
+
+alb_management_segment_prefix="10.184.142"
+tkg_mgmt_segment_prefix="10.184.140"
+tkg_workload_segment_prefix="10.184.143"
+tkg_ssc_segment_prefix="10.184.141"
+
+# last 4 ips before egress gateway
+alb_management_segment_nat_gateway_ip = "10.220.68.210"
+tkg_mgmt_segment_nat_gateway_ip = "10.220.68.211"
+tkg_workload_segment_nat_gateway_ip = "10.220.68.212"
+tkg_ssc_segment_nat_gateway_ip = "10.220.68.213"
