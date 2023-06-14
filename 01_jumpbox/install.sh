@@ -104,6 +104,8 @@ echo "Testing jumpbox connectivity..."
 # wait until jumpbox is responding on port 22
 until nc -vzw5 "$jumpbox_ip" 22; do sleep 5; done
 
+ssh-keygen -R ${jumpbox_ip}
+ssh-keyscan -H ${jumpbox_ip} >> ~/.ssh/known_hosts
 
 ssh_public_key=$(cat ../01_jumpbox/.ssh/id_rsa.pub | base64)
 ssh_private_key=$(cat ../01_jumpbox/.ssh/id_rsa | base64)

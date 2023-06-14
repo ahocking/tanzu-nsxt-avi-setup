@@ -28,16 +28,16 @@ ssh_private_key=$(cat ../01_jumpbox/.ssh/id_rsa | base64)
 ssh ubuntu@${jumpbox_ip} -i ../01_jumpbox/.ssh/id_rsa "$(typeset -f addSSHKeyToJumphost); addSSHKeyToJumphost $ssh_private_key" "$ssh_public_key"
 ssh ubuntu@${jumpbox_ip} -i ../01_jumpbox/.ssh/id_rsa "$(typeset -f); installTKGmTools"
 ssh ubuntu@${jumpbox_ip} -i ../01_jumpbox/.ssh/id_rsa "$(typeset -f); installTerraform"
-# ssh ubuntu@${jumpbox_ip} -i ../jumpbox/.ssh/id_rsa "$(typeset -f installTKGm); installTKGm $vcc_user $vcc_pass $tkgm_version"
-# ssh ubuntu@${jumpbox_ip} -i ../jumpbox/.ssh/id_rsa "$(typeset -f uploadovas); uploadovas $vcenter_host '$slot_password' $vcc_user $vcc_pass $tkgm_version"
+ssh ubuntu@${jumpbox_ip} -i ../01_jumpbox/.ssh/id_rsa "$(typeset -f installTKGm); installTKGm $vcc_user $vcc_pass $tkgm_version"
+ssh ubuntu@${jumpbox_ip} -i ../01_jumpbox/.ssh/id_rsa "$(typeset -f uploadovas); uploadovas $vcenter_host '$slot_password' $vcc_user $vcc_pass $tkgm_version"
 
 # case ${tkgm_version} in
 #   1.*)
 #     #NTP_SERVERS config variable available in 2.x
-#     ssh ubuntu@${jumpbox_ip} -i ../jumpbox/.ssh/id_rsa "$(typeset -f addNTPOverlay); addNTPOverlay"
-#     ssh ubuntu@${jumpbox_ip} -i ../jumpbox/.ssh/id_rsa "$(typeset -f addCert); addCert $base64_cacert"
-#     ssh ubuntu@${jumpbox_ip} -i ../jumpbox/.ssh/id_rsa "$(typeset -f deployMgmtCluster); deployMgmtCluster $ssh_public_key $vcenter_host '$slot_password' $vsphere_control_plane_endpoint $os_name $cluster_plan";;
+#     ssh ubuntu@${jumpbox_ip} -i ../01_jumpbox/.ssh/id_rsa "$(typeset -f addNTPOverlay); addNTPOverlay"
+#     ssh ubuntu@${jumpbox_ip} -i ../01_jumpbox/.ssh/id_rsa "$(typeset -f addCert); addCert $base64_cacert"
+#     ssh ubuntu@${jumpbox_ip} -i ../01_jumpbox/.ssh/id_rsa "$(typeset -f deployMgmtCluster); deployMgmtCluster $ssh_public_key $vcenter_host '$slot_password' $vsphere_control_plane_endpoint $os_name $cluster_plan";;
 #   2.*)
-#     ssh ubuntu@${jumpbox_ip} -i ../jumpbox/.ssh/id_rsa "$(typeset -f deployMgmtCluster2); deployMgmtCluster2 $ssh_public_key $vcenter_host '$slot_password' $vsphere_control_plane_endpoint $os_name $cluster_plan"
-#     ssh ubuntu@${jumpbox_ip} -i ../jumpbox/.ssh/id_rsa "$(typeset -f addCert); addCert $base64_cacert";;
+#     ssh ubuntu@${jumpbox_ip} -i ../01_jumpbox/.ssh/id_rsa "$(typeset -f deployMgmtCluster2); deployMgmtCluster2 $ssh_public_key $vcenter_host '$slot_password' $vsphere_control_plane_endpoint $os_name $cluster_plan"
+#     ssh ubuntu@${jumpbox_ip} -i ../01_jumpbox/.ssh/id_rsa "$(typeset -f addCert); addCert $base64_cacert";;
 # esac

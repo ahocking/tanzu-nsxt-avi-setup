@@ -15,6 +15,17 @@ resource "nsxt_policy_nat_rule" "avi-controller-dnat" {
   rule_priority       = 1
 }
 
+resource "nsxt_policy_nat_rule" "avi-controller-snat" {
+  display_name        = "avi-controller-snat"
+  description         = "SNAT rule for avi-controller"
+  action              = "SNAT"
+  gateway_path        = nsxt_policy_tier1_gateway.tkg.path
+  logging             = false
+  source_networks     = [var.avi_controller_ip]
+  translated_networks = [var.avi_controller_external_ip]
+  rule_priority       = 1
+}
+
 data "vsphere_content_library_item" "avi_controller_file" {
     name = var.avi_controller_content_item_name
     type = "ova"
