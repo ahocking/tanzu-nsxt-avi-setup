@@ -13,6 +13,12 @@ resource "nsxt_policy_segment" "tkg-work" {
       server_address = "${var.tkg_workload_segment_prefix}.254/24"
       dns_servers    = var.dns_servers
       lease_time     = 200
+
+      # NTP
+      dhcp_generic_option {
+        code         = "42"
+        values       = var.ntp_server_ip_list
+      }
     }
   }
 }

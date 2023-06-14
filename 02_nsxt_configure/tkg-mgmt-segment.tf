@@ -8,11 +8,17 @@ resource "nsxt_policy_segment" "tkg-mgmt" {
 
   subnet {
     cidr = "${var.tkg_mgmt_segment_prefix}.1/24"
-    dhcp_ranges = ["${var.tkg_mgmt_segment_prefix}.2-${var.tkg_mgmt_segment_prefix}.200"]
+    dhcp_ranges = ["${var.tkg_mgmt_segment_prefix}.2-${var.tkg_mgmt_segment_prefix}.128"]
     dhcp_v4_config {
       server_address = "${var.tkg_mgmt_segment_prefix}.254/24"
       dns_servers    = var.dns_servers
       lease_time     = 200
+
+      # NTP
+      dhcp_generic_option {
+        code         = "42"
+        values       = var.ntp_server_ip_list
+      }
     }
   }
 }

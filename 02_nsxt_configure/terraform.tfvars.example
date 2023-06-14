@@ -27,9 +27,13 @@ alb_management_segment_prefix="10.184.142"
 tkg_mgmt_segment_prefix="10.184.140"
 tkg_workload_segment_prefix="10.184.143"
 tkg_ssc_segment_prefix="10.184.141"
+tkg_tap_segment_prefix="10.184.145"
 
 # last 4 ips before egress gateway
 alb_management_segment_nat_gateway_ip = "10.220.68.210"
 tkg_mgmt_segment_nat_gateway_ip = "10.220.68.211"
 tkg_workload_segment_nat_gateway_ip = "10.220.68.212"
 tkg_ssc_segment_nat_gateway_ip = "10.220.68.213"
+tkg_tap_segment_nat_gateway_ip = "10.220.38.228"
+
+ntp_server_ip_list = ["10.188.26.119", "10.166.1.120", "10.128.152.81", "10.112.16.181"]

@@ -123,7 +123,7 @@ variable "tkg_workload_segment_nat_gateway_ip" {
 variable "tkg_ssc_segment_prefix" {
   description = "prefix for the tkg-ssc"
   type        = string
-  default     = "192.168.3"
+  default     = "192.168.4"
 }
 
 variable "tkg_ssc_segment_nat_gateway_ip" {
@@ -132,12 +132,27 @@ variable "tkg_ssc_segment_nat_gateway_ip" {
 }
 
 
+variable "tkg_tap_segment_prefix" {
+  description = "prefix for the tkg-tap"
+  type        = string
+  default     = "192.168.5"
+}
+
+variable "tkg_tap_segment_nat_gateway_ip" {
+  description = "The source IP address to use for all traffic leaving the tkg-tap"
+  type        = string
+}
+
 variable "avi_controller_ip" {
   type = string
 }
 
 variable "avi_controller_external_ip" {
   type = string
+}
+
+variable "ntp_server_ip_list" {
+  type = list(string)
 }
 
 variable "avi_controller_vm_props" {

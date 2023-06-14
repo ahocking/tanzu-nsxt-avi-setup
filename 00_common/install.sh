@@ -93,15 +93,6 @@ function installGovc {
   fi
 }
 
-function installYtt {
-  echo "Installing ytt"
-  if [ ! -f  /usr/local/bin/ytt ]; then
-      wget -q https://github.com/vmware-tanzu/carvel-ytt/releases/download/v0.41.1/ytt-linux-amd64
-      sudo install ytt-linux-amd64 /usr/local/bin/ytt 
-      rm -f ytt-linux-amd64
-  fi
-}
-
 function installDocker {
   echo "Installing docker"
   curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
@@ -123,7 +114,6 @@ function installKind {
 function installTKGmTools {
   installVcc
   installGovc
-  installYtt
   installJq
   installDocker
   installKind
@@ -136,7 +126,7 @@ function installTKGm {
     export VCC_PASS="$2"
     tkgm_version="$3"
 
-    rm -rf cli 
+    
 
     filename=tanzu-cli-bundle-linux-amd64.tar.gz
     #overwrite filename for older versions
@@ -146,7 +136,41 @@ function installTKGm {
     esac
 
     vcc download -p vmware_tanzu_kubernetes_grid -s tkg -v ${tkgm_version} -f 'tanzu-cli-bundle-linux-amd64.*' --accepteula
-    tar -xf $HOME/vcc-downloads/$filename
+    
+    pushd $HOME/vcc-downloads
+
+    rm -rf cli
+
+    tar -xf $filename
+
+
+    # ytt
+    gunzip $(find . -name ytt-linux*) 
+    chmod +x $(find . -name ytt-linux*)
+    sudo install $(find . -name ytt-linux*) /usr/local/bin/ytt
+
+    # kapp
+    gunzip $(find . -name kapp-linux*) 
+    chmod +x $(find . -name kapp-linux*)
+    sudo install $(find . -name kapp-linux*) /usr/local/bin/kapp
+
+    # kbld
+    gunzip $(find . -name kbld-linux*) 
+    chmod +x $(find . -name kbld-linux*)
+    sudo install $(find . -name kbld-linux*) /usr/local/bin/kbld
+
+    # imgpkg
+    gunzip $(find . -name imgpkg-linux*) 
+    chmod +x $(find . -name imgpkg-linux*)
+    sudo install $(find . -name imgpkg-linux*) /usr/local/bin/imgpkg
+
+    # vendir
+    gunzip $(find . -name vendir-linux*) 
+    chmod +x $(find . -name vendir-linux*)
+    sudo install $(find . -name vendir-linux*) /usr/local/bin/vendir
+
+
+
     tanzu_cli=$(find . -name tanzu-core-linux_amd64)
     sudo install $tanzu_cli /usr/local/bin/tanzu
 
@@ -158,6 +182,8 @@ function installTKGm {
     esac
     tanzu plugin list
     rm -rf cli
+
+    popd
   fi
 
   echo "Installing kubectl"
